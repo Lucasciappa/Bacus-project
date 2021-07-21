@@ -22,12 +22,12 @@ app.secret_key = "miClave"
 
 @app.route("/")
 def index():
-    sql  = "SELECT nombre, foto FROM productos;"
+    sql  = "SELECT id, nombre, foto, descripcion, cepa FROM productos;"
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute(sql)
     productos = cursor.fetchall()
-    print(productos)
+    # print(productos)
 
     return render_template("bacus/index.html", productos = productos)
 
@@ -54,6 +54,7 @@ def storage():
 
     ahora = datetime.now()
     tiempo = ahora.strftime("%Y%H%M%S")
+
     if _foto.filename != "":
         nuevoNombreFoto = tiempo + _foto.filename
         _foto.save("uploads/" + nuevoNombreFoto)
@@ -73,12 +74,14 @@ def destroy(id):
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    cursor.execute('SELECT foto FROM empleados WHERE id = %s', id)
+    cursor.execute('SELECT foto FROM productos WHERE id = %s', id)
     fila = cursor.fetchone()
+    print(fila)
     os.remove(os.path.join(app.config["CARPETA"], fila[0]))
 
-    cursor.execute("DELETE FROM empleados WHERE id=%s", id)
+    cursor.execute("DELETE FROM productos WHERE id=%s", id)
     conn.commit()
+    print(fila)
     return redirect("/")
 
 
@@ -87,20 +90,22 @@ def destroy(id):
 def edit(id):
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM empleados WHERE id=%s", id)
-    empleado = cursor.fetchone()
+    cursor.execute("SELECT * FROM productos WHERE id=%s", id)
+    producto = cursor.fetchone()
 
-    return render_template("bacus/edit.html", empleado = empleado)
+    return render_template("bacus/edit.html", producto = producto)
 
 @app.route("/update", methods=["POST"])
 def update():
     _nombre = request.form["txtNombre"]
-    _correo = request.form["txtCorreo"]
+    _descripcion = request.form["txtDescripcion"]
+    _cepa = request.form["txtCepa"]
+    _precio = request.form["txtPrecio"]
     _foto = request.files["txtFoto"]
     id = request.form["txtId"]
 
-    sql = "UPDATE empleados SET nombre = %s, email = %s WHERE id = %s;"
-    datos = (_nombre, _correo, id )
+    sql = "UPDATE productos SET nombre = %s, descripcion = %s, cepa = %s, precio = %s  WHERE id = %s;"
+    datos= (_nombre, _descripcion, _cepa, _precio, id)
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute(sql, datos)
@@ -110,10 +115,10 @@ def update():
     if _foto.filename != "":
         nuevoNombreFoto = tiempo + _foto.filename
         _foto.save("uploads/" + nuevoNombreFoto)
-        cursor.execute('SELECT foto FROM empleados WHERE id = %s', id)
+        cursor.execute('SELECT foto FROM productos WHERE id = %s', id)
         fila = cursor.fetchone()
         os.remove(os.path.join(app.config["CARPETA"], fila[0]))
-        cursor.execute('UPDATE empleados SET foto = %s WHERE id = %s', (nuevoNombreFoto, id))
+        cursor.execute('UPDATE productos SET foto = %s WHERE id = %s', (nuevoNombreFoto, id))
 
     conn.commit() # Grabo las modif en mi BD
     

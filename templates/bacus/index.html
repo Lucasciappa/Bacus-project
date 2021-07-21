@@ -7,21 +7,24 @@
             <div class="container-search">
                 <input type="search" placeholder="Buscar..." class="card-filter"><a href=""><i class="fas fa-search"></i></a>
             </div>
-            <div class="container-abm">
+            <div class="container-plus">
                 <a href="{{url_for('create')}}"><i class="fas fa-plus"></i></a>
-                <a><i class="fas fa-edit"></i></a>
-                <a><i class="fas fa-trash-alt"></i></a>
             </div>
         </div>
 
         <article class="cards">
             {% for producto in productos %}
           <figure class="card">
-            <img src="uploads/{{producto[1]}}" alt="Vino">
+            <img src="uploads/{{producto[2]}}" alt="Vino">
             <figcaption>
-                {{producto[0]}}
-                <a class="btn-edit-trash"><i class="fas fa-edit"></i></a>
-                <a class="btn-edit-trash"><i class="fas fa-trash-alt"></i></a>
+                <h3>{{producto[1]}}</h3>
+                <br>
+                <h5>- {{producto[4]}}</h5>
+                <p>{{producto[3]}}</p>
+                <div class="container-trash-edit">
+                    <a href="/edit/{{producto[0]}}" class="btn-edit-trash"><i class="fas fa-edit"></i></a>
+                    <a href="/destroy/{{producto[0]}}" onclick="return confirm('¿Desea borrar el producto?')" class="btn-edit-trash"><i class="fas fa-trash-alt"></i></a>
+                </div>
             </figcaption>
 
           </figure>

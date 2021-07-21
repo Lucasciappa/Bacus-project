@@ -220,7 +220,7 @@ p {
     margin:auto .1rem;
 }
 
-.container-abm a{
+.container-plus a{
     outline: none;
     margin: .5rem;
     font-size: 1.5rem;
@@ -266,10 +266,12 @@ p {
     padding: 1rem;
 }
 
+
 .btn-edit-trash{
-    padding: 1rem;
-    font-size: 1.5rem;
+    padding: .5rem;
+    font-size: 1rem;
     color: white;
+    float: right;
 }
 
  /* FORMULARIO  */
@@ -361,7 +363,7 @@ p {
     margin-bottom: var(--header-height);
     padding: .5rem;
     text-align: center;
-    background-color: red;
+    background-color: var(--second-color);
     color: var(--white-color);
 }
 

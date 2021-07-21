@@ -1,7 +1,21 @@
 {% include 'header.html' %}
 <main class="main">
 
+    
+<!-- 24.- Manejo de mensajes de validación -->
+<!-- Lo que hacemos es recibir todos los mensajes utilizando flash -->
+{% with messages= get_flashed_messages() %}
+{% if messages %}
+    <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+            {{message}}
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
 <h2>Validaciones de Formularios</h2>
+
 
 <form class="contact-form" action="/store" enctype="multipart/form-data" method="POST">
   <legend>Agregar Producto</legend>
